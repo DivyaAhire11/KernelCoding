@@ -1,0 +1,25 @@
+#Ignore all executable files
+*.exe
+
+#Ignore object files
+*.o
+*.obj
+
+#Ignore compiled libraries
+*.dll
+*.lib
+*.so
+*.a
+
+#Ignore Visual Studio folders
+/bin/
+/Debug/
+/Release/
+/x64/
+/x86/
+
+#Ignore temporary files
+*.log
+*.tmp
+*.bak
+*.swp
