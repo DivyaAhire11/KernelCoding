@@ -17,7 +17,7 @@
 /Release/
 /x64/
 /x86/
-.vscode/
+.vscode
 
 #Ignore temporary files
 *.log
