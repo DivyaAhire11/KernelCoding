@@ -8,106 +8,136 @@ Linked file Allocation method
 // 0 -> free block
 // 1 -> allocated block
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #define MAX 20
 
 int bitVector[MAX];
-int disk[MAX]; //stores next block(linked list) , -1 means end
+int disk[MAX]; // stores next block(linked list) , -1 means end
 int n;
 
-struct Directory{
+struct Directory
+{
     char fname[20];
     int start;
     int size;
-}dir[20];
+} dir[20];
 
 int dirCount = 0;
 
-//show Bit Vector
-void showBitVector(){
-   int i;
-   printf("\n Bit Vector\n");
-   for(i=0;i<n;i++){
-    printf("%d  ",bitVector[i]);
-   }
-   printf("\n");
+// show Bit Vector
+void showBitVector()
+{
+    int i;
+    printf("\n Bit Vector\n");
+    for (i = 0; i < n; i++)
+    {
+        printf("%d  ", bitVector[i]);
+    }
+    printf("\n");
 }
-//Initialized disk randomly
-void initializedDisk(){
+// Initialized disk randomly
+void initializedDisk()
+{
     int i;
     srand(time(NULL));
-    for(i=0;i<n;i++){
-        bitVector[i] = rand()%2;
+    for (i = 0; i < n; i++)
+    {
+        bitVector[i] = rand() % 2;
         disk[i] = -1;
     }
 
     printf("\nDisk initialized Randomly\n");
 }
 
-//create New File
-void createFile(){
+// create New File
+void createFile()
+{
     char name[20];
-    int block,i,j,first=-1,prev = -1;
+    int block, i, j, first = -1, prev = -1;
 
     printf("\n Enter file Name :");
-    scanf("%s",name);
+    scanf("%s", name);
 
     printf("Enter number of blocks required :");
-    scanf("%d",&block);
+    scanf("%d", &block);
 
-    //count free blocks
+    // count free blocks
     int freeCount = 0;
-    for(i=0;i<n;i++)
-      if(bitVector[i] == 0)
-        freeCount++;
+    for (i = 0; i < n; i++)
+        if (bitVector[i] == 0)
+            freeCount++;
 
-    if(freeCount < block){
+    if (freeCount < block)
+    {
         printf("Not enough free blocks available\n");
         return;
     }
 
-    //Allocate blocks
-    for(i=0,j=0; i<n && i<n && j<block ;i++){
-        if(bitVector[i] == 0){
+    // Allocate blocks
+    for (i = 0, j = 0; i < n && i < n && j < block; i++)
+    {
+        if (bitVector[i] == 0)
+        {
             bitVector[i] = 1;
 
-            if(first == -1)
-              first = i;
+            if (first == -1)
+                first = i;
             else
-              disk[prev] = i;
+                disk[prev] = i;
 
             prev = i;
             j++;
         }
     }
-      disk[prev] = -1;  //END of File
+    disk[prev] = -1; // END of File
 
-      //store in directory
-      strcpy(dir[dirCount].fname,name);
-      dir[dirCount].start = first;
-      dir[dirCount].size = block;
-      dirCount++;
+    // store in directory
+    strcpy(dir[dirCount].fname, name);
+    dir[dirCount].start = first;
+    dir[dirCount].size = block;
+    dirCount++;
 
-      printf("File created successfully! \n");
+    printf("File created successfully! \n");
 }
 
-void showDirectory(){
-    int i,temp;
-    if(dirCount == 0){
+void showDirectory()
+{
+    int i, temp;
+    if (dirCount == 0)
+    {
         printf("\n Directory is empty");
         return;
     }
-    
+
+    printf("\nFILE\t Start\t Size \tBlocks\n");
+    for (i = 0; i < dirCount; i++)
+    {
+        printf("$s\t%d\t%d\t", dir[i].fname, dir[i].start, dir[i].size);
+        temp = dir[i].start;
+
+        while (temp != -1)
+        {
+            printf("%d  ", temp);
+            temp = disk[temp];
+        }
+        printf("\n");
+    }
 }
 
-int main() {
+int main()
+{
     int choice;
+    printf("Enter total number of disk blocks :");
+    scanf("%d",&n);
 
-    while(1) {
+    initializedDisk();
+
+    while(1)
+    {
         printf("\n--- MENU ---");
         printf("\n1. Show Bit Vector");
         printf("\n2. Create New File");
@@ -116,15 +146,22 @@ int main() {
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
 
-        switch(choice) {
-            case 1: showBitVector();
-                    break;
-            case 2: createFile();
-                    break;
-            case 3: showDirectory();
-                    break;
-            case 4: return 0;
-            default: printf("Invalid choice!\n");
+        switch (choice)
+        {
+        case 1: 
+                showBitVector();
+            break;
+        case 2:
+            createFile();
+            break;
+        case 3:
+            showDirectory();
+            break;
+        case 4:
+            printf("Program Ended!");
+            return 0;
+        default:
+            printf("Invalid choice!\n");
         }
     }
 }

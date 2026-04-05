@@ -1,5 +1,6 @@
 #Ignore all executable files
 *.exe
+*.txt
 
 #Ignore object files
 *.o

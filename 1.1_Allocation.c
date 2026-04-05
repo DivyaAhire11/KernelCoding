@@ -24,8 +24,9 @@ int max[P][R] = {
     {4, 4, 4},
     {6, 5, 5}};
 
-int available[R]; // available array
+int available[R]={0,0,0}; // available array
 int need[P][R];   // need matrix
+int isAvailableSet = 0;
 
 // Function to calculate Need matrix
 void calculateNeed()
@@ -48,6 +49,7 @@ void acceptAvailable()
     {
         scanf("%d", &available[j]);
     }
+     isAvailableSet = 1;
 }
 void displayAllocationMax()
 {
@@ -55,14 +57,14 @@ void displayAllocationMax()
     printf("\n Process\t Allocation(A,B,C)\tMax(A,B,C)\n");
     for (i = 0; i < P; i++)
     {
-        printf("P%d \t", i);
+        printf("P%d \t\t", i);
         for (j = 0; j < R; j++)
-            printf("%d ", allocation[i][j]);
+            printf("%d   ", allocation[i][j]);
 
         printf("\t\t");
 
         for (j = 0; j < R; j++)
-            printf("%d ", max[i][j]);
+            printf("%d   ", max[i][j]);
 
         printf("\n");
     }
@@ -75,21 +77,26 @@ void displayNeed()
     printf("\n Process\tNeed(A,B,C)\n");
     for (i = 0; i < P; i++)
     {
-        printf("P%d \t", i);
+        printf("P%d \t\t", i);
         for (j = 0; j < R; j++)
-            printf("%d ", need[i][j]);
+            printf("%d   ", need[i][j]);
 
         printf("\n");
     }
 }
 void displayAvailable()
 {
+     if (!isAvailableSet)
+    {
+        printf("\nAvailable resources not set yet!\n");
+        return;
+    }
     int i;
     printf("\n Available Resources:\n");
-    printf("A B C\n");
+    printf("A    B    C\n");
     for (i = 0; i < R; i++)
     {
-        printf("%d ", available[i]);
+        printf("%d   ", available[i]);
     }
     printf("\n");
 }
